@@ -15,7 +15,7 @@ class Audio
   createButton()
   {
     let button = createButton('Play/Pause');
-    button.position((windowWidth - button.width) / 2, windowHeight - 30);
+    
     button.mousePressed(this.playPause);
     return button;
   }
@@ -35,7 +35,7 @@ class Audio
   {
     //createSlider() from p5.js.org, create a slider in here for controling the audio volume.
     let slider = createSlider(0, 1, 0.5, 0.1);
-    slider.position((windowWidth - slider.width) / 2, windowHeight - 60);
+    
     return slider;
   }
 
@@ -121,7 +121,7 @@ function createLines()
   //attach the audioLength to the property of lines.
   let lineSettings = [//array for each set of lines
     { x: 0.27, y: 0.44, angle: -0.58, color: 0, weight: 1, lengthLeft: 0.28 * audioLength, lengthRight: 0.20 * audioLength, distanceStart: -0.05, distanceEnd: 0.03, num: 20 },
-    { x: 0.59, y: 0.39, angle: -0.58, color: 0, weight: 1, lengthLeft: 0.76 * audioLength, lengthRight: 0.76 * audioLength, distanceStart: -0.06, distanceEnd: 0.02, num: 20 },
+    { x: 0.59, y: 0.39, angle: -0.58, color: 0, weight: 1, lengthLeft: 0.76 * audioLength2, lengthRight: 0.76 * audioLength2, distanceStart: -0.06, distanceEnd: 0.02, num: 20 },
     { x: 0.30, y: 0.50, angle: -0.58, color: 0, weight: 1, lengthLeft: 0.03 * audioLength, lengthRight: 0.03 * audioLength, distanceStart: -0.07, distanceEnd: 0.05, num: 40 },
     { x: 0.34, y: 0.56, angle: -0.58, color: 0, weight: 1, lengthLeft: 0.26 * audioLength, lengthRight: 0.22 * audioLength, distanceStart: -0.13, distanceEnd: -0.10, num: 14 },
     { x: 0.48, y: 0.45, angle: -0.58, color: 0, weight: 10 * audioLength2, lengthLeft: 0.30, lengthRight: 0.28, distanceStart: -0.13, distanceEnd: -0.12, num: 1 },
