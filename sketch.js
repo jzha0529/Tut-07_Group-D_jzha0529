@@ -1,5 +1,7 @@
 let song;//the audio.
+let classAudio;//set this global, so I can call the function in the class in anywhere
 
+//create a class for all the variables and function about the audio.
 class Audio
 {
   constructor()
@@ -52,25 +54,47 @@ function preload()
 function setup() {
   createCanvas(windowWidth, windowHeight);//Create a canvas
   background(246, 240, 221);//background color
-  let classAudio = new Audio();
-  window.classAudio = classAudio;
+  classAudio = new Audio();
+  
+  /*
+    call their position in here again.
+    otherwise their position is wrong
+    when the window is first opened.
+  */
+  buttonPos(classAudio.button);
+  sliderPos(classAudio.slider);
 }
 
 function draw()
 {
   background(246, 240, 221);
   createLines();//move createLines() to here for animation.
-  window.classAudio.audioVolume();
+  classAudio.audioVolume();
 }
 
 function windowResized()
 {
- //React to window size
+  //React to window size
   resizeCanvas(windowWidth, windowHeight);
   background(246, 240, 221);
-  buttonPos();
-  sliderPos();
+  buttonPos(classAudio.button);
+  sliderPos(classAudio.slider);
   createLines();
+}
+
+/*
+  create functions for the button and slider.
+  and call it in the windowResized.
+  so they won't change the position when screen size is changed.
+*/
+function buttonPos(button)
+{
+  button.position((windowWidth - button.width) / 2, windowHeight - 30);
+}
+
+function sliderPos(slider)
+{
+  slider.position((windowWidth - slider.width) / 50, windowHeight - 30);
 }
 
 function createLines()
@@ -80,7 +104,7 @@ function createLines()
   let scaleFactor = min(windowWidth/1920, windowHeight/1080);
   scale(scaleFactor);
 
-  let spectrum = window.classAudio.fft.analyze();//get the audio frequency
+  let spectrum = classAudio.fft.analyze();//get the audio frequency
   let sum = 0;
   for(let i = 0; i < spectrum.length; i++)
   {
@@ -91,10 +115,10 @@ function createLines()
   //set 1 so it won't change the original line shape. 
   //1.7 = larger this value, the greater the change in line length.
 
-  let audioLength2 = map(frequency, 0, 150, 1, 0.001);//decrease the property when playing the audio.
+  let audioLength2 = map(frequency, 0, 150, 1, 0.001);//decrease the property of the line when playing the audio.
   
   //radians angle mode value
-  //attach the audioLength to the length property of lines.
+  //attach the audioLength to the property of lines.
   let lineSettings = [//array for each set of lines
     { x: 0.27, y: 0.44, angle: -0.58, color: 0, weight: 1, lengthLeft: 0.28 * audioLength, lengthRight: 0.20 * audioLength, distanceStart: -0.05, distanceEnd: 0.03, num: 20 },
     { x: 0.59, y: 0.39, angle: -0.58, color: 0, weight: 1, lengthLeft: 0.76 * audioLength, lengthRight: 0.76 * audioLength, distanceStart: -0.06, distanceEnd: 0.02, num: 20 },
