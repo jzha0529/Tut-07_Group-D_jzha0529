@@ -1,5 +1,7 @@
 //create variables for audio
 let song, analyzer, fft;
+let button;
+let slider;
 
 function preload()
 {
@@ -14,26 +16,49 @@ function setup() {
   fft = new p5.FFT();
   fft.setInput(song);
 
-  createLines();
-
   //create button for play and pause.
-  let button = createButton('Play/Pause');
-  button.position((width - button.width) / 2, height - button.height - 2);
+  button = createButton('Play/Pause');
+  buttonPos();
   button.mousePressed(play_pause);
+
+  //createSlider() from p5.js, for controling the audio volume.
+  slider = createSlider(0, 1, 0.5, 0.1);
+  sliderPos();
 }
 
 function draw()
 {
   background(246, 240, 221);
-  createLines();
+  createLines();//move createLines() to here for animation.
+  audioVolume();
 }
 
 function windowResized()
 {
  //React to window size
- resizeCanvas(windowWidth, windowHeight);
- background(246, 240, 221);
- createLines();
+  resizeCanvas(windowWidth, windowHeight);
+  background(246, 240, 221);
+  buttonPos();
+  sliderPos();
+  createLines();
+}
+
+//set position to a function and call it in windowResized
+function buttonPos()
+{
+  button.position((width - button.width) / 2, height - button.height - 2);
+}
+
+//do the same thing as button position.
+function sliderPos()
+{
+  slider.position((width - slider.width) / 20, height - slider.height - 2);
+}
+
+function audioVolume()
+{
+  let volume = slider.value();//create variable and attach it to the slider
+  song.setVolume(volume);//set the variable to song volume.
 }
 
 
@@ -42,20 +67,23 @@ function createLines()
   strokeCap(SQUARE);
   //scale the canvas.
   let scaleFactor = min(windowWidth/1920, windowHeight/1080);
+  let lineHeight = windowHeight / windowWidth;
   scale(scaleFactor);
 
-  let spectrum = fft.analyze();
+  let spectrum = fft.analyze();//get the audio frequency
   let sum = 0;
   for(let i = 0; i < spectrum.length; i++)
   {
-    sum += spectrum[i];
+    sum += spectrum[i];//plus 
   }
-  let frequency = sum / spectrum.length;
-  let audioLength = map(frequency, 0, 150, 1.0, 1.5);
+  let frequency = sum / spectrum.length;//get the average of the frequency.
+  let audioLength = map(frequency, 0, 150, 1.0, 1.5);//map it to 1.0, 1.5 to control the line.
+
   
   //radians angle mode value
+  //attach the audioLength to the length property of lines.
   let lineSettings = [//array for each set of lines
-    { x: 0.27, y: 0.44, angle: -0.58, color: 0, weight: 1, lengthLeft: 0.28 * audioLength, lengthRight: 0.20 * audioLength, distanceStart: -0.05, distanceEnd: 0.03, num: 20 },
+    { x: 0.27, y: 0.44, angle: -0.58, color: 0, weight: 1, lengthLeft: 0.28 * audioLength * lineHeight, lengthRight: 0.20 * audioLength, distanceStart: -0.05, distanceEnd: 0.03, num: 20 },
     { x: 0.59, y: 0.39, angle: -0.58, color: 0, weight: 1, lengthLeft: 0.76 * audioLength, lengthRight: 0.76 * audioLength, distanceStart: -0.06, distanceEnd: 0.02, num: 20 },
     { x: 0.30, y: 0.50, angle: -0.58, color: 0, weight: 1, lengthLeft: 0.03 * audioLength, lengthRight: 0.03 * audioLength, distanceStart: -0.07, distanceEnd: 0.05, num: 40 },
     { x: 0.34, y: 0.56, angle: -0.58, color: 0, weight: 1, lengthLeft: 0.26 * audioLength, lengthRight: 0.22 * audioLength, distanceStart: -0.13, distanceEnd: -0.10, num: 14 },
