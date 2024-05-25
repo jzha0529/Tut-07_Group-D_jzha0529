@@ -1,7 +1,48 @@
-//create variables for audio
-let song, analyzer, fft;
-let button;
-let slider;
+let song;//the audio.
+
+class Audio
+{
+  constructor()
+  {
+    this.fft = new p5.FFT();
+    this.button = this.createButton();
+    this.slider = this.createSlider();
+  }
+
+  //create button for play and pause.
+  createButton()
+  {
+    let button = createButton('Play/Pause');
+    button.position((windowWidth - button.width) / 2, windowHeight - 30);
+    button.mousePressed(this.playPause);
+    return button;
+  }
+  //create a function for play/pause audio and loop it.
+  playPause()
+  {
+    if(song.isPlaying())
+    {
+      song.stop();
+    }
+    else
+    {
+      song.loop();
+    }
+  }
+  createSlider()
+  {
+    //createSlider() from p5.js.org, create a slider in here for controling the audio volume.
+    let slider = createSlider(0, 1, 0.5, 0.1);
+    slider.position((windowWidth - slider.width) / 2, windowHeight - 60);
+    return slider;
+  }
+
+  audioVolume()
+  {
+    let volume = this.slider.value();//create variable and attach it to the slider
+    song.setVolume(volume);//set the variable to song volume.
+  }
+}
 
 function preload()
 {
@@ -11,26 +52,15 @@ function preload()
 function setup() {
   createCanvas(windowWidth, windowHeight);//Create a canvas
   background(246, 240, 221);//background color
-
-  //create FFT
-  fft = new p5.FFT();
-  fft.setInput(song);
-
-  //create button for play and pause.
-  button = createButton('Play/Pause');
-  buttonPos();
-  button.mousePressed(play_pause);
-
-  //createSlider() from p5.js.org, create a slider in here for controling the audio volume.
-  slider = createSlider(0, 1, 0.5, 0.1);
-  sliderPos();
+  let classAudio = new Audio();
+  window.classAudio = classAudio;
 }
 
 function draw()
 {
   background(246, 240, 221);
   createLines();//move createLines() to here for animation.
-  audioVolume();
+  window.classAudio.audioVolume();
 }
 
 function windowResized()
@@ -43,25 +73,6 @@ function windowResized()
   createLines();
 }
 
-//set position to a function and call it in windowResized
-function buttonPos()
-{
-  button.position((width - button.width) / 2, height - button.height - 2);
-}
-
-//do the same thing as button position.
-function sliderPos()
-{
-  slider.position((width - slider.width) / 20, height - slider.height - 2);
-}
-
-function audioVolume()
-{
-  let volume = slider.value();//create variable and attach it to the slider
-  song.setVolume(volume);//set the variable to song volume.
-}
-
-
 function createLines()
 {
   strokeCap(SQUARE);
@@ -69,7 +80,7 @@ function createLines()
   let scaleFactor = min(windowWidth/1920, windowHeight/1080);
   scale(scaleFactor);
 
-  let spectrum = fft.analyze();//get the audio frequency
+  let spectrum = window.classAudio.fft.analyze();//get the audio frequency
   let sum = 0;
   for(let i = 0; i < spectrum.length; i++)
   {
@@ -122,18 +133,4 @@ function drawLines({ x, y, angle, color, weight, lengthLeft, lengthRight, distan
     line(-length / 2 + xOff, yOff, length / 2 + xOff, yOff);//Draw the line
   }
   pop();
-}
-
-//create a function for play/pause audio and loop it.
-function play_pause()
-{
-  if(song.isPlaying())
-  {
-    song.stop();
-  }
-  else
-  {
-    song.loop();
-  }
-  
 }
