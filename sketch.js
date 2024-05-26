@@ -35,11 +35,10 @@ class Audio
     }
   }
 
-  //createSlider() from p5.js.org, create a slider in here for controling the audio volume.
   createSlider()
   {
     
-    let slider = createSlider(0, 1, 0.5, 0.1);
+    let slider = createSlider(0, 1, 0.5, 0.1);//createSlider() from p5.js.org, create a slider in here for controling the audio volume.
     
     return slider;
   }
@@ -62,11 +61,12 @@ class RandomShape
     this.shapeSize = random(10, 30);
     this.size = this.shapeSize;
     this.opacity = 255;
+    this.color = color(random(255), random(255), random(255));
   }
 
   display()
   {
-    fill(255, this.opacity);
+    fill(this.color.levels[0], this.color.levels[1], this.color.levels[2], this.opacity);
     noStroke();
     if(this.type === 'circle')
     {
@@ -198,7 +198,8 @@ function createLines()
   
   //radians angle mode value
   //attach the audioLength to the property of lines.
-  let lineSettings = [//array for each set of lines
+  //array for each set of lines
+  let lineSettings = [
     { x: 0.27, y: 0.44, angle: -0.58, color: 255, weight: 1, lengthLeft: 0.28 * audioLength, lengthRight: 0.20, distanceStart: -0.05, distanceEnd: 0.03, num: 20 },
     { x: 0.59, y: 0.39, angle: -0.58, color: 255, weight: 1, lengthLeft: 0.76 * audioLength2, lengthRight: 0.76 * audioLength2, distanceStart: -0.06  * audioLength2, distanceEnd: 0.02, num: 20 },
     { x: 0.30, y: 0.50, angle: -0.58, color: 255, weight: 1, lengthLeft: 0.03 * audioLength, lengthRight: 0.03 * audioLength, distanceStart: -0.07, distanceEnd: 0.05, num: 40 },
