@@ -38,7 +38,7 @@ class Audio
   createSlider()
   {
     
-    let slider = createSlider(0, 1, 0.5, 0.1);
+    let slider = createSlider(0, 1, 0.5, 0.1);//song volume slider : min = 0, max = 1. start value = 0.5, every change = 0.1.
     
     return slider;
   }
@@ -46,7 +46,7 @@ class Audio
   //control volume.
   audioVolume()
   {
-    let volume = this.slider.value();//create variable and attach it to the slider
+    let volume = this.slider.value();//create variable and attach its value it to the slider. value() is from p5.js.org.
     song.setVolume(volume);//set the variable to song volume.
   }
 }
@@ -226,10 +226,10 @@ function createLines()
     { x: 0.68, y: 0.44, angle: -0.58, color: 255, weight: 1, lengthLeft: 0.76 * audioLength2, lengthRight: 0.76 * audioLength2, distanceStart: -0.06 * audioLength2, distanceEnd: 0.02, num: 20},
     { x: 0.78, y: 0.375, angle: -0.58, color: 255, weight: 2, lengthLeft: 0.3 * audioLength2, lengthRight: 0.39 * audioLength2, distanceStart: -0.06 * audioLength2, distanceEnd: 0.02, num: 20},
     { x: 0.70, y: 0.58, angle: -0.58, color: 255, weight: 6 * audioLength2, lengthLeft: 0.60 * audioLength2, lengthRight: 0.60 * audioLength2, distanceStart: -0.15, distanceEnd: -0.15, num: 1},
-    { x: 0.48, y: 0.53, angle: -0.58, color: 255, weight: 2, lengthLeft: 0.33, lengthRight: 0.33 * audioLength, distanceStart: -0.025, distanceEnd: 0.01, num: 10},
+    { x: 0.48, y: 0.53, angle: -0.58, color: 255, weight: 2, lengthLeft: 0.33 * audioLength2, lengthRight: 0.33 * audioLength2, distanceStart: -0.025 * audioLength2, distanceEnd: 0.01, num: 10},
     { x: 0.78, y: 0.44, angle: -0.58, color: 255, weight: 6, lengthLeft: 0.20 * audioLength2, lengthRight: 0.20 * audioLength2, distanceStart: -0.15, distanceEnd: -0.15, num: 1},
     { x: 0.48, y: 0.45, angle: -0.58, color: 255, weight: 1, lengthLeft: 0.53 * audioLength, lengthRight: 0.53 * audioLength, distanceStart: -0.13, distanceEnd: -0.11, num: 1 },
-    { x: 0.45, y: 0.64, angle: -0.58, color: 255, weight: 6 * audioLength2, lengthLeft: 0.20, lengthRight: 0.20, distanceStart: -0.15, distanceEnd: -0.15, num: 1},
+    { x: 0.45, y: 0.64, angle: -0.58, color: 255, weight: 6 * audioLength2, lengthLeft: 0.20 * audioLength2, lengthRight: 0.20 * audioLength2, distanceStart: -0.15, distanceEnd: -0.15, num: 1},
     { x: 0.30, y: 0.56, angle: -0.58, color: 255, weight: 4 * audioLength2, lengthLeft: 0.20, lengthRight: 0.20, distanceStart: -0.15, distanceEnd: -0.08, num: 1},
   ];
 
