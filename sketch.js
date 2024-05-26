@@ -1,15 +1,13 @@
 let song;//the audio.
 let classAudio;//set this global, so I can call the function in the class in anywhere
-let shapes = [];
-let currentShape;
-let dynamicColor;
+let currentShape;//a variable to determine current shape.
 
 //create a class for all the variables and function about the audio.
 class Audio
 {
   constructor()
   {
-    this.fft = new p5.FFT();
+    this.fft = new p5.FFT();//create fft to analyze the frequency
     this.button = this.createButton();
     this.slider = this.createSlider();
   }
@@ -23,7 +21,7 @@ class Audio
     return button;
   }
   
-  //create a function for play/pause audio and loop it.
+  //create a function for play/pause audio.
   playPause()
   {
     if(song.isPlaying())
@@ -36,10 +34,11 @@ class Audio
     }
   }
 
+  //createSlider() from p5.js.org, create a slider in here for controling the audio volume.
   createSlider()
   {
     
-    let slider = createSlider(0, 1, 0.5, 0.1);//createSlider() from p5.js.org, create a slider in here for controling the audio volume.
+    let slider = createSlider(0, 1, 0.5, 0.1);
     
     return slider;
   }
@@ -52,23 +51,27 @@ class Audio
   }
 }
 
+//create a class for the random shape. instore all variables i need in here
 class RandomShape
 {
   constructor(type)
   {
-    this.type = type;
-    this.x = random(width);
-    this.y = random(height);
-    this.shapeSize = random(10, 30);
+    this.type = type;//get the shape type
+    this.x = random(width);//random width
+    this.y = random(height);//random height
+    this.shapeSize = random(10, 30);//random range of the shape size.
     this.size = this.shapeSize;
-    this.opacity = 255;
-    this.color = color(random(255), random(255), random(255));
+    this.opacity = 255;//opacity at the start.
+    this.color = color(random(255), random(255), random(255));//random color.
   }
 
+  //function for displaying
   display()
   {
-    fill(this.color.levels[0], this.color.levels[1], this.color.levels[2], this.opacity);
+    fill(this.color.levels[0], this.color.levels[1], this.color.levels[2], this.opacity);//fill in the random color
     noStroke();
+
+    //create the shapes
     if(this.type === 'circle')
     {
       ellipse(this.x, this.y, this.size);
@@ -89,17 +92,17 @@ class RandomShape
 
   update()
   {
-    this.opacity -= 7;
+    this.opacity -= 7;//The larger this value, the faster the shape disappears.
   }
 
   updateSize(frequency)
   {
-    this.size = this.shapeSize + frequency * 1.5;
+    this.size = this.shapeSize + frequency * 1.5;//The larger this value, the greater the magnitude.
   }
   
   shapeExist()
   {
-    return this.opacity <= 0;
+    return this.opacity <= 0;//determine the opacity
   }
 }
 
@@ -124,38 +127,41 @@ function setup() {
 
 function draw()
 {
-  background(0);
+  background(0);//black background color
   createLines();//move createLines() to here for animation.
   createRandomShapes();
   classAudio.audioVolume();
 
-  if(currentShape)
+  if(currentShape)//if shape exists.
   {
-    let spectrum = classAudio.fft.analyze();
+    let spectrum = classAudio.fft.analyze();//get audio frequency
     let sum = 0;
     for (let i = 0; i < spectrum.length; i++) {
       sum += spectrum[i];
     }
-    let frequency = sum / spectrum.length;
-    currentShape.updateSize(frequency);
-    currentShape.update();
-    currentShape.display();
+    let frequency = sum / spectrum.length;//get the average frequency
+    currentShape.updateSize(frequency);//animate the size based on the frequency.
+    currentShape.update();//get the opacity.
+    currentShape.display();//display
+
+    //if the opacity <= 0, the shape disappears.
     if (currentShape.shapeExist()) {
       currentShape = null;
     }
   }
 }
 
+//create a function for the random shape.
 function createRandomShapes()
 {
-  let spectrum = classAudio.fft.analyze();
-  let maxAmplitude = max(spectrum);
+  let spectrum = classAudio.fft.analyze();//get the frequency
+  let maxAmplitude = max(spectrum);//get the max amplitude.
   
 
-  if(maxAmplitude && !currentShape)
+  if(maxAmplitude && !currentShape)//if there is no shape, then generate random shape.
   {
     let shapeType = random(['circle', 'square', 'arc', 'triangle']);
-    currentShape = new RandomShape(shapeType);
+    currentShape = new RandomShape(shapeType);//attach it to shapeType.
   }
 }
 
@@ -169,16 +175,16 @@ function windowResized()
   createLines();
 }
 
-function buttonPos(button)
-{
-  button.position((windowWidth - button.width) / 2, windowHeight - 30);
-}
-
 /*
   create functions for the position of button and slider.
   and call it in the windowResized.
   so they won't change the position when screen size is changed.
 */
+
+function buttonPos(button)
+{
+  button.position((windowWidth - button.width) / 2, windowHeight - 30);
+}
 
 function sliderPos(slider)
 {
@@ -206,7 +212,7 @@ function createLines()
   let audioLength2 = map(frequency, 0, 150, 1, 0.001);//decrease the property of the line when playing the audio.
   
   //radians angle mode value
-  //attach the audioLength to the property of lines.
+  //attach the audioLength to the properties of lines.
   //array for each set of lines
   let lineSettings = [
     { x: 0.27, y: 0.44, angle: -0.58, color: 255, weight: 1, lengthLeft: 0.28 * audioLength, lengthRight: 0.20, distanceStart: -0.05, distanceEnd: 0.03, num: 20 },
