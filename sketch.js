@@ -1,5 +1,7 @@
 let song;//the audio.
 let classAudio;//set this global, so I can call the function in the class in anywhere
+let shapes = [];
+let currentShape;
 
 //create a class for all the variables and function about the audio.
 class Audio
@@ -19,6 +21,7 @@ class Audio
     button.mousePressed(this.playPause);
     return button;
   }
+  
   //create a function for play/pause audio and loop it.
   playPause()
   {
@@ -31,18 +34,63 @@ class Audio
       song.loop();
     }
   }
+
+  //createSlider() from p5.js.org, create a slider in here for controling the audio volume.
   createSlider()
   {
-    //createSlider() from p5.js.org, create a slider in here for controling the audio volume.
+    
     let slider = createSlider(0, 1, 0.5, 0.1);
     
     return slider;
   }
 
+  //control volume.
   audioVolume()
   {
     let volume = this.slider.value();//create variable and attach it to the slider
     song.setVolume(volume);//set the variable to song volume.
+  }
+}
+
+class RandomShape
+{
+  constructor(type)
+  {
+    this.type = type;
+    this.x = random(width);
+    this.y = random(height);
+    this.shapeSize = random(10, 30);
+    this.size = this.shapeSize;
+    this.opacity = 255;
+  }
+
+  display()
+  {
+    fill(255, this.opacity);
+    noStroke();
+    if(this.type === 'circle')
+    {
+      ellipse(this.x, this.y, this.size);
+    }
+    else if(this.type === 'square')
+    {
+      rect(this.x, this.y, this.size, this.size);
+    }
+  }
+
+  update()
+  {
+    this.opacity -= 7;
+  }
+
+  updateSize(frequency)
+  {
+    this.size = this.shapeSize + frequency * 1.5;
+  }
+  
+  shapeExist()
+  {
+    return this.opacity <= 0;
   }
 }
 
@@ -67,30 +115,61 @@ function setup() {
 
 function draw()
 {
-  background(246, 240, 221);
+  background(0);
   createLines();//move createLines() to here for animation.
+  createRandomShapes();
   classAudio.audioVolume();
+
+  if(currentShape)
+  {
+    let spectrum = classAudio.fft.analyze();
+    let sum = 0;
+    for (let i = 0; i < spectrum.length; i++) {
+      sum += spectrum[i];
+    }
+    let frequency = sum / spectrum.length;
+    currentShape.updateSize(frequency);
+    currentShape.update();
+    currentShape.display();
+    if (currentShape.shapeExist()) {
+      currentShape = null;
+    }
+  }
+}
+
+function createRandomShapes()
+{
+  let spectrum = classAudio.fft.analyze();
+  let maxAmplitude = max(spectrum);
+  
+
+  if(maxAmplitude && !currentShape)
+  {
+    let shapeType = random(['circle', 'square']);
+    currentShape = new RandomShape(shapeType);
+  }
 }
 
 function windowResized()
 {
   //React to window size
   resizeCanvas(windowWidth, windowHeight);
-  background(246, 240, 221);
+  background(0);
   buttonPos(classAudio.button);
   sliderPos(classAudio.slider);
   createLines();
 }
 
-/*
-  create functions for the button and slider.
-  and call it in the windowResized.
-  so they won't change the position when screen size is changed.
-*/
 function buttonPos(button)
 {
   button.position((windowWidth - button.width) / 2, windowHeight - 30);
 }
+
+/*
+  create functions for the position of button and slider.
+  and call it in the windowResized.
+  so they won't change the position when screen size is changed.
+*/
 
 function sliderPos(slider)
 {
@@ -120,23 +199,24 @@ function createLines()
   //radians angle mode value
   //attach the audioLength to the property of lines.
   let lineSettings = [//array for each set of lines
-    { x: 0.27, y: 0.44, angle: -0.58, color: 0, weight: 1, lengthLeft: 0.28 * audioLength, lengthRight: 0.20 * audioLength, distanceStart: -0.05, distanceEnd: 0.03, num: 20 },
-    { x: 0.59, y: 0.39, angle: -0.58, color: 0, weight: 1, lengthLeft: 0.76 * audioLength2, lengthRight: 0.76 * audioLength2, distanceStart: -0.06, distanceEnd: 0.02, num: 20 },
-    { x: 0.30, y: 0.50, angle: -0.58, color: 0, weight: 1, lengthLeft: 0.03 * audioLength, lengthRight: 0.03 * audioLength, distanceStart: -0.07, distanceEnd: 0.05, num: 40 },
-    { x: 0.34, y: 0.56, angle: -0.58, color: 0, weight: 1, lengthLeft: 0.26 * audioLength, lengthRight: 0.22 * audioLength, distanceStart: -0.13, distanceEnd: -0.10, num: 14 },
-    { x: 0.48, y: 0.45, angle: -0.58, color: 0, weight: 10 * audioLength2, lengthLeft: 0.30, lengthRight: 0.28, distanceStart: -0.13, distanceEnd: -0.12, num: 1 },
-    { x: 0.78, y: 0.24, angle: -0.58, color: 0, weight: 10 * audioLength2, lengthLeft: 0.14, lengthRight: 0.15, distanceStart: -0.14, distanceEnd: -0.12, num: 1 },
-    { x: 0.68, y: 0.32, angle: -0.58, color: 0, weight: 10 * audioLength2, lengthLeft: 0.05, lengthRight: 0.08, distanceStart: -0.15, distanceEnd: -0.11, num: 2 },
-    { x: 0.69, y: 0.31, angle: -0.58, color: 0, weight: 1, lengthLeft: 0.04, lengthRight: 0.29 * audioLength2, distanceStart: -0.18, distanceEnd: 0.01, num: 40},
-    { x: 0.68, y: 0.44, angle: -0.58, color: 0, weight: 1, lengthLeft: 0.76, lengthRight: 0.76 * audioLength, distanceStart: -0.06, distanceEnd: 0.02, num: 20},
-    { x: 0.78, y: 0.375, angle: -0.58, color: 0, weight: 2, lengthLeft: 0.3, lengthRight: 0.39 * audioLength, distanceStart: -0.06, distanceEnd: 0.02, num: 20},
-    { x: 0.70, y: 0.58, angle: -0.58, color: 0, weight: 6 * audioLength2, lengthLeft: 0.60, lengthRight: 0.60, distanceStart: -0.15, distanceEnd: -0.15, num: 1},
-    { x: 0.48, y: 0.53, angle: -0.58, color: 0, weight: 2, lengthLeft: 0.33, lengthRight: 0.33 * audioLength, distanceStart: -0.025, distanceEnd: 0.01, num: 10},
-    { x: 0.78, y: 0.44, angle: -0.58, color: 0, weight: 6, lengthLeft: 0.20 * audioLength2, lengthRight: 0.20 * audioLength2, distanceStart: -0.15, distanceEnd: -0.15, num: 1},
-    { x: 0.48, y: 0.45, angle: -0.58, color: 0, weight: 1, lengthLeft: 0.53 * audioLength, lengthRight: 0.53 * audioLength, distanceStart: -0.13, distanceEnd: -0.11, num: 1 },
-    { x: 0.45, y: 0.64, angle: -0.58, color: 0, weight: 6 * audioLength2, lengthLeft: 0.20, lengthRight: 0.20, distanceStart: -0.15, distanceEnd: -0.15, num: 1},
-    { x: 0.30, y: 0.56, angle: -0.58, color: 0, weight: 4 * audioLength2, lengthLeft: 0.20, lengthRight: 0.20, distanceStart: -0.15, distanceEnd: -0.08, num: 1},
+    { x: 0.27, y: 0.44, angle: -0.58, color: 255, weight: 1, lengthLeft: 0.28 * audioLength, lengthRight: 0.20, distanceStart: -0.05, distanceEnd: 0.03, num: 20 },
+    { x: 0.59, y: 0.39, angle: -0.58, color: 255, weight: 1, lengthLeft: 0.76 * audioLength2, lengthRight: 0.76 * audioLength2, distanceStart: -0.06  * audioLength2, distanceEnd: 0.02, num: 20 },
+    { x: 0.30, y: 0.50, angle: -0.58, color: 255, weight: 1, lengthLeft: 0.03 * audioLength, lengthRight: 0.03 * audioLength, distanceStart: -0.07, distanceEnd: 0.05, num: 40 },
+    { x: 0.34, y: 0.56, angle: -0.58, color: 255, weight: 1, lengthLeft: 0.26 * audioLength, lengthRight: 0.22, distanceStart: -0.13, distanceEnd: -0.10, num: 14 },
+    { x: 0.48, y: 0.45, angle: -0.58, color: 255, weight: 10 * audioLength2, lengthLeft: 0.30, lengthRight: 0.28, distanceStart: -0.13, distanceEnd: -0.12, num: 1 },
+    { x: 0.78, y: 0.24, angle: -0.58, color: 255, weight: 10 * audioLength2, lengthLeft: 0.14, lengthRight: 0.15, distanceStart: -0.14, distanceEnd: -0.12, num: 1 },
+    { x: 0.68, y: 0.32, angle: -0.58, color: 255, weight: 10 * audioLength2, lengthLeft: 0.05, lengthRight: 0.08, distanceStart: -0.15, distanceEnd: -0.11, num: 2 },
+    { x: 0.69, y: 0.31, angle: -0.58, color: 255, weight: 1, lengthLeft: 0.04, lengthRight: 0.29 * audioLength2, distanceStart: -0.18, distanceEnd: 0.01, num: 40},
+    { x: 0.68, y: 0.44, angle: -0.58, color: 255, weight: 1, lengthLeft: 0.76 * audioLength2, lengthRight: 0.76 * audioLength2, distanceStart: -0.06 * audioLength2, distanceEnd: 0.02, num: 20},
+    { x: 0.78, y: 0.375, angle: -0.58, color: 255, weight: 2, lengthLeft: 0.3 * audioLength2, lengthRight: 0.39 * audioLength2, distanceStart: -0.06 * audioLength2, distanceEnd: 0.02, num: 20},
+    { x: 0.70, y: 0.58, angle: -0.58, color: 255, weight: 6 * audioLength2, lengthLeft: 0.60 * audioLength2, lengthRight: 0.60 * audioLength2, distanceStart: -0.15, distanceEnd: -0.15, num: 1},
+    { x: 0.48, y: 0.53, angle: -0.58, color: 255, weight: 2, lengthLeft: 0.33, lengthRight: 0.33 * audioLength, distanceStart: -0.025, distanceEnd: 0.01, num: 10},
+    { x: 0.78, y: 0.44, angle: -0.58, color: 255, weight: 6, lengthLeft: 0.20 * audioLength2, lengthRight: 0.20 * audioLength2, distanceStart: -0.15, distanceEnd: -0.15, num: 1},
+    { x: 0.48, y: 0.45, angle: -0.58, color: 255, weight: 1, lengthLeft: 0.53 * audioLength, lengthRight: 0.53 * audioLength, distanceStart: -0.13, distanceEnd: -0.11, num: 1 },
+    { x: 0.45, y: 0.64, angle: -0.58, color: 255, weight: 6 * audioLength2, lengthLeft: 0.20, lengthRight: 0.20, distanceStart: -0.15, distanceEnd: -0.15, num: 1},
+    { x: 0.30, y: 0.56, angle: -0.58, color: 255, weight: 4 * audioLength2, lengthLeft: 0.20, lengthRight: 0.20, distanceStart: -0.15, distanceEnd: -0.08, num: 1},
   ];
+
   for (let settings of lineSettings) {//Iteration
     drawLines(settings);//Call drawLines() to draw the lines
   }
