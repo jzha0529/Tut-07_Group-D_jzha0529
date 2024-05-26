@@ -2,6 +2,7 @@ let song;//the audio.
 let classAudio;//set this global, so I can call the function in the class in anywhere
 let shapes = [];
 let currentShape;
+let dynamicColor;
 
 //create a class for all the variables and function about the audio.
 class Audio
@@ -76,6 +77,14 @@ class RandomShape
     {
       rect(this.x, this.y, this.size, this.size);
     }
+    else if(this.type === 'arc')
+    {
+      arc(this.x, this.y, this.size, this.size, 0, PI + QUARTER_PI, CHORD);//PI + QUARTER_PI, CHORD properties are from p5.js.org.
+    }
+    else if(this.type === 'triangle')
+    {
+      triangle(this.x, this.y, this.x + this.size, this.y, this.x + this.size / 2, this.y - this.size);
+    }
   }
 
   update()
@@ -145,7 +154,7 @@ function createRandomShapes()
 
   if(maxAmplitude && !currentShape)
   {
-    let shapeType = random(['circle', 'square']);
+    let shapeType = random(['circle', 'square', 'arc', 'triangle']);
     currentShape = new RandomShape(shapeType);
   }
 }
