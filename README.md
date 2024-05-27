@@ -30,7 +30,7 @@ Although this image has less to do with the image of our group, I noticed the sl
 
 1. slider() - [p5.js.org](https://p5js.org/reference/#/p5/createSlider)
 __Create a slider element.__ 
-I use it because of the influence of inspiration and wanting to control the volume with a slider.
+I use it because the insprition influences me and I want to control the volume with the slider.
 
 2. value() - [p5.js.org](https://p5js.org/reference/#/p5.Element/value)
 __Returns or sets the element's value.__ 
