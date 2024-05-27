@@ -29,11 +29,11 @@ Although this image has less to do with the image of our group, I noticed the sl
 
 ## 5. References
 
-1. slider() - [p5.js.org](https://p5js.org/reference/#/p5/createSlider)
+1. slider() - [links to slider() page](https://p5js.org/reference/#/p5/createSlider)
 __Create a slider element.__ 
 I use it because the insprition influences me and I want to control the volume with the slider.
 
-2. value() - [p5.js.org](https://p5js.org/reference/#/p5.Element/value)
+2. value() - [links to value() page](https://p5js.org/reference/#/p5.Element/value)
 __Returns or sets the element's value.__ 
 I use it to return the value of the volume to the slider.
 
