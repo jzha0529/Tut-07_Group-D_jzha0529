@@ -22,7 +22,7 @@ Although this image has less to do with the image of our group, I noticed the sl
 
 > Get the average frequency of the music in createLines() in the group code.
 
-> Create audioLength and audioLength2 variables and use the map() method to control how much the line length changes.
+> Create audioLength and audioLength2 variables and use the map() function to control how much the line changes.
 
 > Attach the variables to the corresponding length and weight properties in the line.
 
