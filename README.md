@@ -11,7 +11,7 @@ Audio frequency to animate the __line length__ and __weight__ of the image.
 ## 3. Inspiration
 ![Inspiration](image.png)
 Although this image has less to do with the image of our group, I noticed the slider. it comes to my mind that in my individual part I could control the volume with the slider, which would be more precise than controlling it with mouse movements.
-[links](https://bratp.fun/mandelbrot/)
+[view the image](https://bratp.fun/mandelbrot/)
 
 ## 4. Technical explanation
 
@@ -29,11 +29,11 @@ Although this image has less to do with the image of our group, I noticed the sl
 
 ## 5. References
 
-1. slider() - [links to slider() page](https://p5js.org/reference/#/p5/createSlider)
+1. slider() - [slider() page](https://p5js.org/reference/#/p5/createSlider)
 __Create a slider element.__ 
 I use it because the insprition influences me and I want to control the volume with the slider.
 
-2. value() - [links to value() page](https://p5js.org/reference/#/p5.Element/value)
+1. value() - [value() page](https://p5js.org/reference/#/p5.Element/value)
 __Returns or sets the element's value.__ 
 I use it to return the value of the volume to the slider.
 
