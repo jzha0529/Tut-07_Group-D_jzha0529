@@ -26,3 +26,11 @@ Although this image has less to do with the image of our group, I noticed the sl
 
 > Attach the variables to the corresponding length and weight properties in the line.
 
+## 5. References
+
+1. slider() - ![p5.js.org](https://p5js.org/reference/#/p5/createSlider)
+Create a slider element. I use it because of the influence of inspiration and wanting to control the volume with a slider.
+
+2. value() - ![p5.js.org](https://p5js.org/reference/#/p5.Element/value)
+Returns or sets the element's value. I use it to return the value of the volume to the slider.
+
