@@ -46,7 +46,7 @@ class Audio
   //control volume.
   audioVolume()
   {
-    let volume = this.slider.value();//create variable and attach its value it to the slider. value() is from p5.js.org.
+    let volume = this.slider.value();//value() is from p5.js.org. create variable and attach its value it to the slider.
     song.setVolume(volume);//set the variable to song volume.
   }
 }
