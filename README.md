@@ -29,7 +29,7 @@ Although this image has less to do with the image of our group, I noticed the sl
 
 ## 5. References
 
-1. slider() - [slider() page](https://p5js.org/reference/#/p5/createSlider)
+1. createSlider() - [slider() page](https://p5js.org/reference/#/p5/createSlider)
 __Create a slider element.__ 
 I use it because the insprition influences me and I want to control the volume with the slider.
 
