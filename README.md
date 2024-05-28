@@ -6,7 +6,7 @@ Click the play button and wait for the music to start, and control the volume by
 
 ## 2. individual approach
 
-Audio frequency to animate the __line length__ and __weight__ of the image.
+Use __audio frequency__ to animate the __length and weight__ of lines in the group image.
 
 ## 3. Inspiration
 ![Inspiration](image.png)
