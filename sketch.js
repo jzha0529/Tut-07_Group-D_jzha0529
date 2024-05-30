@@ -205,7 +205,7 @@ function createLines()
     sum += spectrum[i];
   }
   let frequency = sum / spectrum.length;//get the average of the frequency.
-  let audioLength = map(frequency, 0, 150, 1, 1.7);//map it to 1.0, 1.5 to control the line.
+  let audioLength = map(frequency, 0, 150, 1, 1.7);//map it to control the line change.
   //set 1 so it won't change the original line shape. 
   //1.7 = larger this value, the greater the change in line length.
 
