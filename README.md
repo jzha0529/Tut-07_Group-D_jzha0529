@@ -1,6 +1,6 @@
 # Tut-07_Group-D_jzha0529
 
-## 1. Interation
+## 1. Interaction
 
 Click the play button and wait for the music to start, and control the volume by scrolling the slider.
 
